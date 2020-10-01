@@ -64,7 +64,7 @@ button {
 
 button:first-child:hover {
   background-color: #cdedfd;
-  background-image: linear-gradient(45deg, #cdedfd 0%, #ffec82 37%, #ffcfd2 100%);
+  background-image: linear-gradient(to left bottom, #cdedfd, #b4f3fc, #a3f9ed, #aafbcf, #c6f8ab, #dbf09d, #efe795, #ffde93, #ffd6a1, #ffd1b3, #ffcec4, #ffcfd2);
 }
 
 button:hover {
