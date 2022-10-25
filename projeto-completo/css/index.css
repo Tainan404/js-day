@@ -89,6 +89,10 @@ button:active {
 .loading-overlay {
   display: none;
   position: absolute;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  color: white;
   opacity: 0.7;
   background-color: black;
   width: 100%;

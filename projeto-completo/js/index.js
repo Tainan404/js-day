@@ -28,6 +28,11 @@ const disableButtons = () => {
   buttons.forEach(button => button.disabled = true);
 }
 
+const setLoadingOverlay = (display) => {
+  const loadingOverlay = document.querySelector('#loadOverlay');
+  loadingOverlay.style.display = display
+}
+
 const enableButtons = () => {
   const buttons = document.querySelectorAll('button');
   buttons.forEach(button => button.disabled = false);
@@ -35,8 +40,11 @@ const enableButtons = () => {
 
 async function attachImage(type = ''){
     disableButtons();
+    setLoadingOverlay('inherit');
     const imgTagRef = refImg();
     const imageUrl = await getImageURL(type);
+    imgTagRef.onload = ()=> setLoadingOverlay('none');
     imgTagRef.src = imageUrl;
+
     enableButtons();
 }
