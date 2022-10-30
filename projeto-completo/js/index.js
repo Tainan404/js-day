@@ -4,6 +4,12 @@ function refImg() {
   return imgElement;
 }
 
+function refFigure() {
+  const figure = document.getElementById('figure');
+  console.log('Figure', figure);
+  return figure;
+}
+
 const getImageURL = async (type = ''/* normal or gray image*/) => {
   const opts = {
     method: 'GET',
@@ -21,6 +27,40 @@ const getImageURL = async (type = ''/* normal or gray image*/) => {
   }
   console.log('urlObj', urlObj);
   return urlObj.url;
+}
+
+const getImageId = (url) => {
+  const urlSplited = url.split('/id/');
+  const imageId = urlSplited[1].split('/')[0];
+  return imageId;
+}
+
+const getImageInfo = async (url) => {
+  const imageId = getImageId(url);
+  const opts = {
+    method: 'GET',
+    headers:{
+      'Content-Type': 'application/json'
+    },
+  };
+  let imageInfo = null;
+  try {
+    imageInfo = await fetch(`https://picsum.photos/id/${imageId}/info`, opts).then((response) => response.json());
+  } catch (error) {
+    alert('erro ao buscar dados da imagem');
+    enableButtons();
+  }
+  return imageInfo;
+}
+
+const addImageCaption = (imageInfo) => {
+  const figure = refFigure();
+  const oldFigCaption = figure.getElementsByTagName('figcaption')[0];
+  const figCaption = document.createElement("figcaption");
+  const text = document.createTextNode("Autor: " + imageInfo.author);
+  figCaption.appendChild(text);
+  oldFigCaption != undefined && figure.removeChild(oldFigCaption);
+  figure.appendChild(figCaption);
 }
 
 const disableButtons = () => {
@@ -43,8 +83,10 @@ async function attachImage(type = ''){
     setLoadingOverlay('inherit');
     const imgTagRef = refImg();
     const imageUrl = await getImageURL(type);
+    const imageInfo = await getImageInfo(imageUrl);
     imgTagRef.onload = ()=> setLoadingOverlay('none');
     imgTagRef.src = imageUrl;
+    addImageCaption(imageInfo);
 
     enableButtons();
 }
